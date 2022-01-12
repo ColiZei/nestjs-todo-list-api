@@ -1,15 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Todo } from './entities/todo.entity';
+import { TodoRepository } from './entities/todo.repository';
 
 @Injectable()
 export class TodosService {
-  constructor(
-    @InjectRepository(Todo) private readonly todoRepository: Repository<Todo>,
-  ) {}
+  constructor(private readonly todoRepository: TodoRepository) {}
 
   create(createTodoDto: CreateTodoDto) {
     return this.todoRepository.save(createTodoDto);

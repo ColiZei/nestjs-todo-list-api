@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Todo } from './entities/todo.entity';
 import { TodosController } from './todos.controller';
 import { TodosService } from './todos.service';
 
@@ -7,6 +9,7 @@ describe('TodosController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [TypeOrmModule.forFeature([Todo])],
       controllers: [TodosController],
       providers: [TodosService],
     }).compile();
