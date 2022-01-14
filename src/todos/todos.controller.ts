@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -37,23 +38,38 @@ export class TodosController {
   @ApiOperation({ summary: 'Get todo' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
-  findOne(@Param('id') id: string) {
-    return this.todosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      const todo = await this.todosService.findOne(+id);
+      return todo;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update todo' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(+id, updateTodoDto);
+  async update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
+    try {
+      const todo = await this.todosService.update(+id, updateTodoDto);
+      return todo;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete todo' })
   @ApiOkResponse()
   @ApiNotFoundResponse()
-  remove(@Param('id') id: string) {
-    return this.todosService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const removed = await this.todosService.remove(+id);
+      return removed;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 }
